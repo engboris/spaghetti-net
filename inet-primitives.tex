@@ -1,0 +1,91 @@
+\input{style}
+\input{symbols}
+
+% ====================================================
+% CELLS
+% ====================================================
+
+\newcommand{\inetcell}[3][]{
+	% 1 = style
+	% 2 = node name
+	% 3 = node symbol
+	\node[cell] [#1] (#2) {#3};
+}
+
+% ====================================================
+% WIRES
+% ====================================================
+
+\newcommand{\wire}[3][]{
+	% 1 = style
+	% 2 = from
+	% 3 = to
+	\draw[wire] [#1] (#2) -- (#3);
+}
+
+\newcommand{\wirelabel}[5][]{
+	% 1 = style
+	% 2 = from
+	% 3 = to
+	% 4 = label
+	% 5 = position (left, right, above, below)
+	\draw[wire] [#1] (#2) -- (#3) node[midway, #5] {#4};
+}
+
+\newcommand{\wirepath}[2][]{
+	% 1 = style
+	% 2 = path
+	\draw[wire] [#1] #2;
+}
+
+% ====================================================
+% BOXES
+% ====================================================
+
+\newcommand{\stboxlw}{6pt}
+\newcommand{\stboxh}{20pt}
+\newcommand{\stboxrw}{30pt}
+\newcommand{\stboxrwaux}{35pt}
+\newcommand{\sepbox}{2pt}
+\newcommand{\belowbox}{\stboxh+2*\sepbox+1pt}
+
+\newcommand{\boxnodes}[4]{
+	% 1 = link to box
+	% 2 = left width
+	% 3 = right width
+	% 4 = height
+	\node at (#1.center) [left=#2, nospace] (#1so) {};
+	\node at (#1.center) [right=#3, nospace] (#1se) {};
+	\node at (#1se.center) [above=#4, nospace] (#1ne) {};
+	\node at (#1ne-|#1so) [nospace] (#1no) {};
+}
+
+\newcommand{\boxline}[2]{
+	% 1 = box link
+	% 2 = line style
+	\draw[#2](#1.center) -- (#1se.center) -- (#1ne.center) -- (#1no.center) -- (#1so.center)--(#1.center);
+}
+
+\newcommand{\abox}[5]{
+	% 1 = link to box
+	% 2 = line style
+	% 3 = right width
+	% 4 = left width
+	% 5 = height
+	\boxnodes{#1}{#3}{#4}{#5}
+	\boxline{#1}{#2line}
+}
+
+\newcommand{\boxauxnodes}[3]{
+	% 1 = link to box
+	% 2 = distance of the right conclusion from SE corner
+	% 3 = distance between the two conclusions
+	\node at (#1se.center)[left = #2, nospace](#1auxk){};
+	\node at (#1auxk.center)[left= #3, nospace](#1aux1){};
+}
+
+\newcommand{\boxlabel}[2]{
+	% 1 = box link
+	% 2 = label
+	\node at ($(#1so)!.5!(#1ne)$) {#2};
+}
