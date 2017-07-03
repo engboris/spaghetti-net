@@ -1,3 +1,4 @@
+\usepackage{fp}
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{decorations.markings}
@@ -6,6 +7,7 @@
 \usetikzlibrary{matrix}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
+\usetikzlibrary{fit}
 \usetikzlibrary{shapes.geometric}
 
 % ====================================================
@@ -29,6 +31,10 @@
 % POSITIONING / DISTANCES
 % ====================================================
 
+% -------------- Boxes --------------
+\newcommand{\boxxpadding}{20pt}
+\newcommand{\boxypadding}{30pt}
+
 % ====================================================
 % FONTS
 % ====================================================
@@ -41,7 +47,6 @@
 % ====================================================
 
 \tikzset{
-  ocenter/.style={baseline={([yshift=-.5ex, xshift=-.5ex]current bounding box)}},
 %
 % -------------- NODE STYLES --------------
   downhead/.style={shape border rotate=-180},
