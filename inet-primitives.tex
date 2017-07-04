@@ -5,22 +5,28 @@
 % NETS
 % ====================================================
 
-\newcommand{\inet}[3][]{
+\newcommandx{\inet}[4][1=, 4=16]{
 	% 1 = style
 	% 2 = name
 	% 3 = label
+	% 4 = number of ports
 	\node[net] [#1] (#2) {#3};
+	\foreach \i in {-1, 0,...,#4}
+		\coordinate (#2_\i) at ($(#2.south west)!\i/(#4+2)!(#2.south east)$);
 }
 
 % ====================================================
 % CELLS
 % ====================================================
 
-\newcommand{\inetcell}[3][]{
+\newcommand{\inetcell}[4][]{
 	% 1 = style
 	% 2 = node name
 	% 3 = node symbol
+	% 4 = number of ports
 	\node[cell] [#1] (#2) {#3};
+	\foreach \i in {0, 1,...,#4}
+		\coordinate (#2_\i) at ($(#2.corner 2)!\i/#4!(#2.corner 3)$);
 }
 
 % ====================================================
