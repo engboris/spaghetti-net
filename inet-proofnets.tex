@@ -1,22 +1,103 @@
-\input{style}
-\input{symbols}
-
 % ====================================================
 % NETS
 % ====================================================
 
 % ====================================================
+% CELLS - GENERAL
+% ====================================================
+
+\newcommand{\inportA}[1]{#1_1}
+\newcommand{\inportB}[1]{#1_3}
+\newcommand{\inport}[1]{#1_2}
+
+% ====================================================
 % MULTIPLICATIVE CELLS
 % ====================================================
 
-\newcommand{\tensorCell}[4][]{
+\newcommand{\tensorCell}[2][]{
 	% 1 = style
 	% 2 = node name
 	\inetcell[#1]{#2}{$\tensor$}{4}
 }
 
-\newcommand{\parCell}[4][]{
+\newcommand{\parCell}[2][]{
 	% 1 = style
 	% 2 = node name
 	\inetcell[#1]{#2}{$\parr$}{4}
+}
+
+\newcommand{\oneCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$\parr$}{3}
+}
+
+\newcommand{\bottomCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$\bot$}{3}
+}
+
+% ====================================================
+% ADDITIVE CELLS
+% ====================================================
+
+\newcommand{\pluslCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$\plusl$}{3}
+}
+
+\newcommand{\plusrCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$\plusr$}{3}
+}
+
+% ====================================================
+% BOXES
+% ====================================================
+
+\newcommand{\promobox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\inetbox[#1]{#2}{#3}
+	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\bang$};
+}
+
+\newcommand{\withbox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\inetbox[#1]{#2}{#3}
+	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\with$};
+}
+
+% ====================================================
+% EXPONENTIALS
+% ====================================================
+
+\newcommand{\whynotCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$\whynot$}{3}
+}
+
+\newcommand{\dereCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$d$}{3}
+}
+
+\newcommand{\weakCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$w$}{3}
+}
+
+\newcommand{\contCell}[2][]{
+	% 1 = style
+	% 2 = node name
+	\inetcell[#1]{#2}{$c$}{3}
 }

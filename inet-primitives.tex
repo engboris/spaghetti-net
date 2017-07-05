@@ -29,24 +29,28 @@
 		\coordinate (#2_\i) at ($(#2.corner 2)!\i/#4!(#2.corner 3)$);
 }
 
+\newcommand{\outport}[1]{#1.corner 1}
+
 % ====================================================
 % WIRES
 % ====================================================
 
-\newcommand{\wire}[3][]{
+\newcommand{\wire}[4][1=, 4=]{
 	% 1 = style
 	% 2 = from
 	% 3 = to
-	\draw[wire] [#1] (#2) -- (#3);
+	% 4 = modulation
+	\draw[wire] [#1] (#2) to[#4] (#3);
 }
 
-\newcommand{\wirelabel}[5][]{
+\newcommandx{\wirelabel}[6][1=, 6=]{
 	% 1 = style
 	% 2 = from
 	% 3 = to
 	% 4 = label
 	% 5 = position (left, right, above, below)
-	\draw[wire] [#1] (#2) -- (#3) node[midway, #5] {#4};
+	% 6 = modulation
+	\draw[wire] [#1] (#2) to[#6] node[midway, #5] {#4} (#3);
 }
 
 \newcommand{\wirepath}[2][]{
@@ -64,5 +68,4 @@
 	% 2 = name
 	% 3 = content
 	\node[draw,inner xsep=\boxxpadding,inner ysep=\boxypadding,fit=#3] [#1] (#2) {};
-	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (bang) {$\bang$};
 }
