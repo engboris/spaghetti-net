@@ -11,6 +11,13 @@
 \usetikzlibrary{shapes.geometric}
 
 % ====================================================
+% LAYERS
+% ====================================================
+
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main}
+
+% ====================================================
 % COLORS
 % ====================================================
 
@@ -39,6 +46,7 @@
 % FONTS
 % ====================================================
 
+\newcommand{\largenodefontsize}{\scriptsize}
 \newcommand{\netfontsize}{\small}
 \newcommand{\nodefontsize}{\normalsize}
 
@@ -49,6 +57,7 @@
 \tikzset{
 %
 % -------------- NODE STYLES --------------
+  largenode/.style={font=\largenodefontsize},
   downhead/.style={shape border rotate=-180},
   uphead/.style={shape border rotate=360},
   cell/.style={

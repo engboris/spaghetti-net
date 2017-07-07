@@ -11,8 +11,9 @@
 	% 3 = label
 	% 4 = number of ports
 	\node[net] [#1] (#2) {#3};
-	\foreach \i in {-1, 0,...,#4}
-		\coordinate (#2_\i) at ($(#2.south west)!\i/(#4+2)!(#2.south east)$);
+	\pgfmathparse{#4-1}\let\upperbound\pgfmathresult
+	\foreach \i in {0,1,...,\upperbound}
+		\coordinate (#2_\i) at ($(#2.south west)!\i/\upperbound!(#2.south east)$);
 }
 
 % ====================================================
@@ -35,12 +36,23 @@
 % WIRES
 % ====================================================
 
-\newcommand{\wire}[4][1=, 4=]{
+\newcommandx{\wire}[4][1=, 4=]{
 	% 1 = style
 	% 2 = from
 	% 3 = to
 	% 4 = modulation
-	\draw[wire] [#1] (#2) to[#4] (#3);
+	\begin{pgfonlayer}{bg}
+		\draw[wire] [#1] (#2) to[#4] node {} (#3);
+	\end{pgfonlayer}
+}
+
+\newcommand{\freewire}[4][]{
+	% 1 = style
+	% 2 = target node
+	% 3 = node name
+	% 4 = label
+	\node [#1] (#3) {#4};
+	\wire{#2}{#3}
 }
 
 \newcommandx{\wirelabel}[6][1=, 6=]{
@@ -50,13 +62,17 @@
 	% 4 = label
 	% 5 = position (left, right, above, below)
 	% 6 = modulation
-	\draw[wire] [#1] (#2) to[#6] node[midway, #5] {#4} (#3);
+	\begin{pgfonlayer}{bg}
+		\draw[wire] [#1] (#2) to[#6] node[midway, #5] {#4} (#3);
+	\end{pgfonlayer}
 }
 
 \newcommand{\wirepath}[2][]{
 	% 1 = style
 	% 2 = path
-	\draw[wire] [#1] #2;
+	\begin{pgfonlayer}{bg}
+		\draw[wire] [#1] #2;
+	\end{pgfonlayer}
 }
 
 % ====================================================
