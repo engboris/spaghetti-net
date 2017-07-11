@@ -1,0 +1,94 @@
+% ====================================================
+% Node
+% ====================================================
+
+\newcommand{\pnnode}[4][]{
+	% 1 = style
+	% 2 = node name
+	% 3 = node symbol
+	\node[circle,draw] [#1] (#2) {#3};
+}
+
+% -------------- Identity --------------
+
+\newcommand{\axNode}[3][]{
+    % 1 = style
+    % 2 = from
+    % 3 = to
+    \pnnode[at=($(#2)!0.5!(#3)$),#1]{ax}{$ax$};
+    \draw (ax) -- (ax -| #2.north);
+    \draw (ax -| #2) -- (#2.north);
+    \draw (ax) -- (ax -| #3.north);
+    \draw (ax -| #3) -- (#3.north);
+}
+
+\newcommand{\cutNode}[3][]{
+    % 1 = style
+    % 2 = from
+    % 3 = to
+    \pnnode[at=($(#2)!0.5!(#3)$),#1]{cut}{$cut$};
+    \draw (cut) -- (cut -| #2.south);
+    \draw (cut -| #2) -- (#2.south);
+    \draw (cut) -- (cut -| #3.south);
+    \draw (cut -| #3) -- (#3.south);
+}
+
+% -------------- Multiplicative --------------
+
+\newcommand{\tensorNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\tensor$};
+}
+
+\newcommand{\parNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\parr$};
+}
+
+\newcommand{\oneNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\one$};
+}
+
+\newcommand{\botNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\bot$};
+}
+
+% -------------- Additive --------------
+
+\newcommand{\pluslNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\oplus_1$};
+}
+
+\newcommand{\plusrNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1]{#2}{$\oplus_2$};
+}
+
+% -------------- Exponential --------------
+
+\newcommand{\contrNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1, largenode]{#2}{$\whynot c$};
+}
+
+\newcommand{\dereNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1, largenode]{#2}{$\whynot d$};
+}
+
+\newcommand{\weakNode}[2][]{
+    % 1 = style
+    % 2 = node name
+    \pnnode[#1, largenode]{#2}{$\whynot w$};
+}
