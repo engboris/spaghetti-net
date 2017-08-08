@@ -1,3 +1,6 @@
+\input{inet-primitives}
+\input{regular-proofnets}
+
 % ====================================================
 % NETS
 % ====================================================
@@ -102,4 +105,36 @@
 	% 1 = style
 	% 2 = node name
 	\inetcell[#1]{#2}{$c$}{3}
+}
+
+% ====================================================
+% BOXES
+% ====================================================
+
+\newcommand{\promobox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\inetbox[#1]{#2}{#3}
+	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\ofcourse$};
+}
+
+\newcommand{\withbox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\inetbox[#1]{#2}{#3}
+	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\with$};
+}
+
+\newcommand{\expcomm}[2][]{
+	% 1 = style
+	% 2 = node name
+	\node[draw,circle,fill=white] [#1] (#2) {$\whynot$};
+}
+
+\newcommand{\addcomm}[2][]{
+	% 1 = style
+	% 2 = node name
+	\node[draw,circle,fill=white,largenode] [#1] (#2) {$\whynot_+$};
 }

@@ -59,8 +59,11 @@
 % -------------- NODE STYLES --------------
   largenode/.style={font=\largenodefontsize},
   downhead/.style={shape border rotate=-180},
+  righthead/.style={shape border rotate=-90},
+  lefthead/.style={shape border rotate=90},
   uphead/.style={shape border rotate=360},
   cell/.style={
+    line width=0.7pt,
     anchor=center,
     inner sep=0.5pt,
     regular polygon,
@@ -115,5 +118,5 @@
 %
 % -------------- UNIVERSALS --------------
   every label/.style={label distance=1pt, font=\nodefontsize, inner sep=1pt},
-  every node/.style={font=\nodefontsize}
+  every node/.style={font=\nodefontsize, minimum size=30pt}
 }
