@@ -1,5 +1,5 @@
+\input{default-style}
 \input{inet-primitives}
-\input{regular-proofnets}
 
 % ====================================================
 % NETS
@@ -26,14 +26,6 @@
 		\draw[doublelink] (#2) -- (#3);
 	\end{pgfonlayer}
 }
-
-% ====================================================
-% CELLS - GENERAL
-% ====================================================
-
-\newcommand{\inportA}[1]{#1_1}
-\newcommand{\inportB}[1]{#1_3}
-\newcommand{\inport}[1]{#1_2}
 
 % ====================================================
 % MULTIPLICATIVE CELLS
@@ -110,6 +102,13 @@
 % ====================================================
 % BOXES
 % ====================================================
+
+\newcommand{\inetbox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\node[draw,inner xsep=\boxxpadding,inner ysep=\boxypadding,fit=#3] [#1] (#2) {};
+}
 
 \newcommand{\promobox}[3][]{
 	% 1 = style

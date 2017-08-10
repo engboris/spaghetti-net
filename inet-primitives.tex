@@ -10,9 +10,9 @@
 	% 3 = label
 	% 4 = number of ports
 	\node[net] [#1] (#2) {#3};
-	\pgfmathparse{#4-1}\let\upperbound\pgfmathresult
-	\foreach \i in {0,1,...,\upperbound}
-		\coordinate (#2_\i) at ($(#2.south west)!\i/\upperbound!(#2.south east)$);
+	% \pgfmathparse{#4-1}\let\upperbound\pgfmathresult
+	% \foreach \i in {0,1,...,\upperbound}
+	% 	\coordinate (#2_\i) at ($(#2.south west)!\i/\upperbound!(#2.south east)$);
 }
 
 % ====================================================
@@ -25,11 +25,9 @@
 	% 3 = node symbol
 	% 4 = number of ports
 	\node[cell] [#1] (#2) {#3};
-	\foreach \i in {0, 1,...,#4}
-		\coordinate (#2_\i) at ($(#2.corner 2)!\i/#4!(#2.corner 3)$);
+	% \foreach \i in {0, 1,...,#4}
+	% 	\coordinate (#2_\i) at ($(#2.corner 2)!\i/#4!(#2.corner 3)$);
 }
-
-\newcommand{\outport}[1]{#1.corner 1}
 
 % ====================================================
 % WIRES
@@ -72,15 +70,4 @@
 	\begin{pgfonlayer}{bg}
 		\draw[wire] [#1] #2;
 	\end{pgfonlayer}
-}
-
-% ====================================================
-% BOXES
-% ====================================================
-
-\newcommand{\inetbox}[3][]{
-	% 1 = style
-	% 2 = name
-	% 3 = content
-	\node[draw,inner xsep=\boxxpadding,inner ysep=\boxypadding,fit=#3] [#1] (#2) {};
 }
