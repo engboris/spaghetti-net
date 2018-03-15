@@ -1,11 +1,13 @@
 % ====================================================
 % DEFINITIONS
 % ====================================================
-% definition of the shape of cells (triangle by default)
+% alias for cells anchors
 
 \newcommand*\pgfdeclareanchoralias[3]{%
     \expandafter\def\csname pgf@anchor@#1@#3\expandafter\endcsname
             \expandafter{\csname pgf@anchor@#1@#2\endcsname}}
 
-\pgfdeclareanchoralias{isosceles triangle}{corner 1}{out}
+\pgfdeclareanchoralias{isosceles triangle}{south}{out}
 \pgfdeclareanchoralias{isosceles triangle}{side 2}{in}
+\pgfdeclareanchoralias{regular polygon}{south}{out}
+\pgfdeclareanchoralias{regular polygon}{north}{in}
