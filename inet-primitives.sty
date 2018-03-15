@@ -1,8 +1,11 @@
+\NeedsTeXFormat{LaTeX2e}
 \input{symbols}
+\input{default-style}
 
 % ====================================================
-% NETS
+% ABSTRACT NETS
 % ====================================================
+% display a named general net
 
 \newcommandx{\inet}[4][1=, 4=16]{
 	% 1 = style
@@ -18,6 +21,7 @@
 % ====================================================
 % CELLS
 % ====================================================
+% general cell with custom symbol
 
 \newcommandx{\inetcell}[4][1=, 4=3]{
 	% 1 = style
@@ -33,6 +37,7 @@
 % WIRES
 % ====================================================
 
+% regular wire
 \newcommandx{\wire}[4][1=, 4=]{
 	% 1 = style
 	% 2 = from
@@ -43,6 +48,7 @@
 	\end{pgfonlayer}
 }
 
+% wire without source (input/output)
 \newcommand{\freewire}[4][]{
 	% 1 = style
 	% 2 = target node
@@ -52,18 +58,20 @@
 	\wire{#2}{#3}
 }
 
+% labelled wire
 \newcommandx{\wirelabel}[6][1=, 6=]{
-	% 1 = style
+	% 1 = style (option)
 	% 2 = from
 	% 3 = to
 	% 4 = label
 	% 5 = position (left, right, above, below)
-	% 6 = modulation
+	% 6 = modulation (option)
 	\begin{pgfonlayer}{bg}
 		\draw[wire] [#1] (#2) to[#6] node[midway, #5] {#4} (#3);
 	\end{pgfonlayer}
 }
 
+% custom path (for advanced TikZ users)
 \newcommand{\wirepath}[2][]{
 	% 1 = style
 	% 2 = path

@@ -1,10 +1,11 @@
-\input{default-style}
-\input{inet-primitives}
+\NeedsTeXFormat{LaTeX2e}
+\usepackage{inet-primitives}
 
 % ====================================================
-% NETS
+% GENERAL NETS
 % ====================================================
 
+% context wire
 \newcommand{\context}[4][]{
 	% 1 = style
 	% 2 = net of reference
@@ -16,6 +17,7 @@
 	\end{pgfonlayer}
 }
 
+% straight line context wire
 \newcommand{\straightcontext}[4][]{
 	% 1 = style
 	% 2 = net of reference
@@ -93,7 +95,7 @@
 	\inetcell[#1]{#2}{$w$}{3}
 }
 
-\newcommand{\contCell}[2][]{
+\newcommand{\contrCell}[2][]{
 	% 1 = style
 	% 2 = node name
 	\inetcell[#1]{#2}{$c$}{3}
@@ -103,6 +105,7 @@
 % BOXES
 % ====================================================
 
+% general box without symbol
 \newcommand{\inetbox}[3][]{
 	% 1 = style
 	% 2 = name
@@ -110,28 +113,38 @@
 	\node[draw,inner xsep=\boxxpadding,inner ysep=\boxypadding,fit=#3] [#1] (#2) {};
 }
 
+% general box with symbol
+\newcommand{\inetboxsym}[4][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	% 4 = symbol
+	\inetbox[#1]{#2}{#3}
+	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {#4};
+}
+
 \newcommand{\promobox}[3][]{
 	% 1 = style
 	% 2 = name
 	% 3 = content
-	\inetbox[#1]{#2}{#3}
-	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\ofcourse$};
+	\inetboxsym[#1]{#2}{#3}{$\ofcourse$}
 }
 
 \newcommand{\withbox}[3][]{
 	% 1 = style
 	% 2 = name
 	% 3 = content
-	\inetbox[#1]{#2}{#3}
-	\node[draw,circle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2_sym) {$\with$};
+	\inetboxsym[#1]{#2}{#3}{$\with$};
 }
 
+% exponential commutation (auxiliary port)
 \newcommand{\expcomm}[2][]{
 	% 1 = style
 	% 2 = node name
 	\node[draw,circle,fill=white] [#1] (#2) {$\whynot$};
 }
 
+% additive commutation (auxiliary port)
 \newcommand{\addcomm}[2][]{
 	% 1 = style
 	% 2 = node name
