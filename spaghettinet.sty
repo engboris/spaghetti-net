@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{spaghettinet}[2018/03/15 Spaghetti Net v1]
+\ProvidesPackage{spaghettinet}[2018/03/15 Spaghettinet v1]
 
 % ====================================================
 % PACKAGES
@@ -115,6 +115,13 @@
 	% 4 = label
 	\node [#1] (#3) {#4};
 	\wire{#2}{#3}
+}
+
+% straight vertical wire (from source to intersection with target)
+\newcommand{\vwire}[2]{
+	% 1 = from
+	% 2 = to
+	\wire{#1}{#1.south |- #2.north}
 }
 
 % labelled wire
