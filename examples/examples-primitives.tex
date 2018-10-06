@@ -27,23 +27,21 @@
     \cutWire{a.out}{b.out}{}{}
     \axWire{t1/2}{t2/1}{}{}
 \end{tikzpicture}
+
 \begin{tikzpicture}
     % cells
-    \inetbigcell[angle=130]{a}{$\alpha$}[5]
-    \inetbigcell[angle=130, right=100pt]{b}{$\beta$}[5]
-    \inetbigcell[above=5mm of a/1]{t1}{$\tau_1$}
-    \inetbigcell[above=5mm of a/4]{t2}{$\tau_2$}
-
-    % wires
-    \inwire{t1/1}{}
-    \inwire{t2/2}{}
-    \inwire{b/1}{}
-    \inwire{b/4}{}
-    \vwire{t1}{a}
-    \vwire{t2}{a}
-
-    \cutWire{a.out}{b.out}{}{}
-    \axWire{t1/2}{t2/1}{}{}
+    \parCell{p1}
+    \parCell[above left=10mm and 5mm of p1]{p2}
+    \tensorCell[above right=10mm and 5mm of p1]{t1}
+    
+    % links
+    \wirelabel{p2.out}{p1/1}{$\dual{X} \parr \dual{X}$}{left}{}
+    \wirelabel{t1.out}{p1/2}{$X \tensor X$}{right}{}
+    \outwire{p1.out}{$\bool$}
+    
+    % axioms
+    \axWire{p2/1}{t1/1}{$X$}{above}
+    \axWire[2.5]{p2/2}{t1/2}{$X$}{above}
 \end{tikzpicture}
 
 

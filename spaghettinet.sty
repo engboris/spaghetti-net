@@ -155,7 +155,7 @@
 	% 5 = position (left, right, above, below)
 	% 6 = modulation (option)
 	\begin{pgfonlayer}{bg}
-		\draw[wire] [#1] (#2) to[#6] node[midway, #5] {#4} (#3);
+		\draw[wire] [#1] (#2) to[#6] node[midway, outer xsep=7pt, outer ysep=2pt, #5] {#4} (#3);
 	\end{pgfonlayer}
 }
 
@@ -171,20 +171,20 @@
 % ====================================================
 % IDENTITY WIRES
 % ====================================================
-\newcommandx{\cutWire}[5][1={out=-90, in=-90}]{
-    % 1 = style (option)
+\newcommandx{\cutWire}[5][1=1]{
+    % 1 = amplitude (option)
 	% 2 = from
 	% 3 = to
 	% 4 = label
 	% 5 = position
-	\wirelabel[#1]{#2}{#3}{#4}{#5}{}
+	\wirelabel[out=-90, in=-90, looseness=#1]{#2}{#3}{#4}{#5}{}
 }
 
-\newcommandx{\axWire}[5][1={out=90, in=90}]{
-	% 1 = style (option)
+\newcommandx{\axWire}[5][1=1]{
+	% 1 = amplitude (option)
 	% 2 = from
 	% 3 = to
 	% 4 = label
 	% 5 = position
-	\wirelabel[#1]{#2}{#3}{#4}{#5}{}
+	\wirelabel[out=90, in=90, looseness=#1]{#2}{#3}{#4}{#5}{}
 }
