@@ -1,5 +1,6 @@
 \documentclass[a4paper,11pt]{article}
-\usepackage{spaghettinet}
+\usepackage[directed]{spaghettinet}
+\input{../spaghetti-proofnets.tex}
 
 \title{Spaghetti-nets : examples with primitive interaction nets}
 \author{Eng Boris}
@@ -11,30 +12,39 @@
 \begin{tikzpicture}
     % cells
     \inetbigcell[angle=130]{a}{$\alpha$}[5]
-    \inetbigcell[above left=10mm and 5mm of a]{t1}{$\tau_1$}
-    \inetbigcell[above right=10mm and 5mm of a]{t2}{$\tau_2$}
+    \inetbigcell[angle=130, right=100pt]{b}{$\beta$}[5]
+    \inetbigcell[above=5mm of a/1]{t1}{$\tau_1$}
+    \inetbigcell[above=5mm of a/4]{t2}{$\tau_2$}
 
     % wires
-    \freewire[above=5mm of t1/1]{t1/1}{dummy_name}{}
-    \freewire[above=5mm of t1/2]{t1/2}{dummy_name}{}
-
-    \freewire[above=5mm of t2/1]{t2/1}{dummy_name}{}
-    \freewire[above=5mm of t2/2]{t2/2}{dummy_name}{}
-
+    \inwire{t1/1}{}
+    \inwire{t2/2}{}
+    \inwire{b/1}{}
+    \inwire{b/4}{}
     \vwire{t1}{a}
     \vwire{t2}{a}
 
-    \freewire[below=5mm of a.out]{a.out}{dummy_name}{}
+    \cutWire{a.out}{b.out}{}{}
+    \axWire{t1/2}{t2/1}{}{}
 \end{tikzpicture}
+\begin{tikzpicture}
+    % cells
+    \inetbigcell[angle=130]{a}{$\alpha$}[5]
+    \inetbigcell[angle=130, right=100pt]{b}{$\beta$}[5]
+    \inetbigcell[above=5mm of a/1]{t1}{$\tau_1$}
+    \inetbigcell[above=5mm of a/4]{t2}{$\tau_2$}
 
-% \begin{tikzpicture}
-%     \node (dummy) {};
-%
-%     \inetcell[uphead, left=5mm of dummy]{c1}{$\alpha$}
-%     \inetcell[righthead, above=5mm of dummy]{c2}{$\beta$}
-%     \inetcell[downhead, right=5mm of dummy]{c3}{$\gamma$}
-%     \inetcell[lefthead, below=5mm of dummy]{c4}{$\omega$}
-% \end{tikzpicture}
+    % wires
+    \inwire{t1/1}{}
+    \inwire{t2/2}{}
+    \inwire{b/1}{}
+    \inwire{b/4}{}
+    \vwire{t1}{a}
+    \vwire{t2}{a}
+
+    \cutWire{a.out}{b.out}{}{}
+    \axWire{t1/2}{t2/1}{}{}
+\end{tikzpicture}
 
 
 \end{document}
