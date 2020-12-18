@@ -1,0 +1,22 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[directed]{spaghettinet}
+
+\title{Spaghetti-nets : examples}
+\author{Boris Eng}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{tikzpicture}
+    % cells
+    \cell{t1}{$\parr_L$}
+    \cell[right=10mm of t1]{t2}{$\otimes$}
+
+    \cutwire{t1/out}{t2/out}
+    \axwire{t1/in}{t2/in}
+    \promobox[inner ysep=2cm]{b}{(t1)(t2)}
+    \expcomm[right=3mm of b/out]{e1}
+\end{tikzpicture}
+
+\end{document}

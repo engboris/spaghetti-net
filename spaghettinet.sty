@@ -1,11 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{spaghettinet}[2018/03/15 Spaghettinet v1]
+\ProvidesPackage{spaghettinet}[2018/03/15 Spaghettinet v2]
 
 % ====================================================
 % PACKAGES
 % ====================================================
+
 \usepackage{xargs}
 \usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{xifthen}
+\usepackage{cmll}
+\usepackage{stmaryrd}
+\usepackage{multirow}
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{calc}
@@ -16,32 +25,175 @@
 \usetikzlibrary{fit}
 \usetikzlibrary{shapes.geometric}
 
-\input{shapes/nrect}
-\input{shapes/cell}
-\input{symbols}
-
 % ====================================================
-% OPTIONS AND STYLES
+% SHAPES
 % ====================================================
 
+% Triangles
+\newcommand*\pgfdeclareanchoralias[3]{%
+    \expandafter\def\csname pgf@anchor@#1@#3\expandafter\endcsname
+            \expandafter{\csname pgf@anchor@#1@#2\endcsname}}
+
+% Rectangles
+\makeatletter
+\newcommand*{\rectx@anchor@bottom}[2]{%
+  \anchor{p#1}{%
+    \pgf@process{\northeast}%
+    \pgf@xa=\pgf@x
+    \pgf@process{\southwest}%
+    \pgf@x=\dimexpr\pgf@x + (\pgf@xa-\pgf@x)*#1/#2\relax
+  }%
+}
+\newcommand*{\declareshaperectx}[1]{%
+  \pgfdeclareshape{rect#1}{%
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{north}
+    \inheritanchor[from=rectangle]{north west}
+    \inheritanchor[from=rectangle]{center}
+    \inheritanchor[from=rectangle]{west}
+    \inheritanchor[from=rectangle]{east}
+    \inheritanchor[from=rectangle]{mid}
+    \inheritanchor[from=rectangle]{mid west}
+    \inheritanchor[from=rectangle]{mid east}
+    \inheritanchor[from=rectangle]{base}
+    \inheritanchor[from=rectangle]{base west}
+    \inheritanchor[from=rectangle]{base east}
+    \inheritanchor[from=rectangle]{south}
+    \inheritanchor[from=rectangle]{south east}
+    \inheritbackgroundpath[from=rectangle]
+    \count@=\m@ne
+    \@whilenum\count@<#1 \do{%
+      \advance\count@\@ne
+      \expandafter\rectx@anchor@bottom\expandafter{\the\count@}{#1}%
+    }%
+  }%
+}
+\makeatother
+
+% ====================================================
+% STYLE
+% ====================================================
+
+% layers
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main}
+
+
+% Colors
+\definecolor{isabelline}{rgb}{0.96, 0.94, 0.93}
+
+\newcommand{\netbgcolor}{isabelline}
+\newcommand{\wiringbgcolor}{white}
+
+% padding of abstract general nets
+\newcommand{\netypadding}{7pt}
+\newcommand{\netxpadding}{35pt}
+
+% padding of boxes
+\newcommand{\boxxpadding}{20pt}
+\newcommand{\boxypadding}{30pt}
+
+% padding of abstract wirings
+\newcommand{\wiringypadding}{7pt}
+\newcommand{\wiringxpadding}{35pt}
+
+% font size of nodes and abstract general nets
+\newcommand{\largenodefontsize}{\scriptsize}
+\newcommand{\netfontsize}{\small}
+\newcommand{\wiringfontsize}{\small}
+\newcommand{\nodefontsize}{\normalsize}
+\newcommand{\bignodefontsize}{\normalsize}
+
+\tikzset{
+  % Node styles
+  largenode/.style={font=\largenodefontsize},
+  downhead/.style={shape border rotate=-180},
+  righthead/.style={shape border rotate=-90},
+  lefthead/.style={shape border rotate=90},
+  uphead/.style={shape border rotate=360},
+  cell/.style={
+    minimum size=30pt,
+    font=\nodefontsize,
+    line width=0.7pt,
+    anchor=center,
+    inner sep=0.5pt,
+    regular polygon,
+    regular polygon sides=3,
+    draw,
+    fill=white,
+    downhead,
+  },
+  angle/.style={isosceles triangle apex angle=#1},
+  triangle/.style={
+    angle=60,
+    minimum size=22pt,
+    line width=0.6pt,
+    inner sep=0.5pt,
+    isosceles triangle,
+    draw,
+    fill=white,
+    shape border rotate=-90,
+  },
+  nospace/.style={inner sep=0pt, outer sep=0pt},
+%
+% Edge styles
+  % on each segment style
+  on each segment/.style={
+    decorate,
+    decoration={
+      show path construction,
+      moveto code={},
+      lineto code={
+        \path [#1]
+        (\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+      },
+      curveto code={
+        \path [#1] (\tikzinputsegmentfirst)
+        .. controls
+        (\tikzinputsegmentsupporta) and (\tikzinputsegmentsupportb)
+        ..
+        (\tikzinputsegmentlast);
+      },
+      closepath code={
+        \path [#1]
+        (\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+      },
+    },
+  },
+  % mid arrow
+  mid arrow/.style={postaction={decorate,decoration={
+    markings,
+    mark=at position .5 with {\arrow[scale=1.5,>=stealth]{>}}
+    }}
+  },
+  % edge styles
+  wire/.style={shorten <=0.5pt, shorten >=0.5pt, draw=black, line width=0.1ex},
+  doublelink/.style={-, double, draw=black, line width=0.15ex, double distance=0.5mm},
+  anchorstyle/.style={},
+%
+% Box style
+  boxline/.style={draw=black, line width=0.1ex, overlay},
+%
+% Net style
+  net/.style={draw=black, fill=\netbgcolor, inner ysep=\netypadding, inner xsep=\netxpadding, rect16, anchor=center, font=\netfontsize},
+  wiring/.style={draw=black, fill=\wiringbgcolor, inner ysep=\wiringypadding, inner xsep=\wiringxpadding, rect16, anchor=center, font=\wiringfontsize},
+%
+% Global style
+  every label/.style={label distance=1pt, font=\nodefontsize, inner sep=1pt},
+}
+
+% ====================================================
+% OPTIONS
+% ====================================================
+
+% to show anchors for debug
 \DeclareOption{show-anchors}{
  \tikzset{
-   anchorstyle/.style={draw,shape=circle,fill=black,inner sep=1.5pt, label={\scriptsize\j}}
+   anchorstyle/.append style={draw,shape=circle,fill=black,inner sep=1.2pt, label={\scriptsize\j}}
  }
 }
-
-\DeclareOption{directed}{
- \tikzset{
-   wire/.style={mid arrow}
- }
-}
-
-\DeclareOption{default}{
-  \input{styles/default}
-  % \input{styles/custom_style}
-  % add other styles here
-}
-\ExecuteOptions{default}
+\DeclareOption{directed}{\tikzset{wire/.append style={-latex}}}
 \ProcessOptions\relax
 
 % ====================================================
@@ -49,7 +201,7 @@
 % ====================================================
 % display a named general net
 
-\newcommandx{\inet}[4][1=, 4=16]{
+\newcommandx{\net}[4][1=, 4=16]{
 	% 1 = style (option)
 	% 2 = name
 	% 3 = label
@@ -62,47 +214,25 @@
         \coordinate[anchorstyle] (#2/d\i) at ($(#2.south west)!\i/\upperbound!(#2.south east)$);
 }
 
-\newcommandx{\abstractwiring}[4][1=, 4=16]{
-	% 1 = style (option)
-	% 2 = name
-	% 3 = label
-	% 4 = number of ports (default=16)
-	\node[wiring] [#1] (#2) {#3};
-}
-
 % ====================================================
 % CELLS
 % ====================================================
 
-% general cell with custom symbol
-\newcommandx{\inetcell}[4][1=, 4=3]{
+% general cell with custom symbol and shape
+% for a node x of n inputs, we define
+% x/in for the middle input, x/out for the output
+% x/0, ..., x/n for the other inputs
+\newcommandx{\cell}[5][1=, 4=2, 5=triangle]{
 	% 1 = style (option)
 	% 2 = node name
 	% 3 = node symbol
-	% 4 = number of ports (default=3)
-	\node[cell] [#1] (#2) {#3};
-	\foreach \i in {0, 1,...,#4}
+	% 4 = number of ports (default=2)
+	\node[#5, label=center:#3] [#1] (#2) {};
+    \pgfmathparse{int(#4-1)}\let\k\pgfmathresult
+	\foreach \i in {1, 2, ...,#4}
 	   \pgfmathparse{int(abs(\i-#4))}\let\j\pgfmathresult
-	   \coordinate[anchorstyle] (#2/\j) at ($(#2.corner 2)!\i/#4!(#2.corner 3)$);
-}
-
-\newcommandx{\inetbigcell}[4][1=, 4=3]{
-	% 1 = style (option)
-	% 2 = node name
-	% 3 = node symbol
-	% 4 = number of ports (default=3)
-	\node[irregular] [#1] (#2) {#3};
-	\foreach \i in {0, ..., #4}
-	   \pgfmathparse{int(abs(\i-#4))}\let\j\pgfmathresult
-	   \coordinate[anchorstyle] (#2/\j) at ($(#2.left corner)!\i/#4!(#2.right corner)$);
-}
-
-% circle node
-\newcommand{\inode}[3][]{
-	% 1 = style
-	% 2 = node name
-	% 3 = node symbol
-	\node[circle,draw] [#1] (#2) {#3};
+	   \coordinate[anchorstyle] (#2/\j) at ($(#2.left corner)!\i/(#4+1)!(#2.right corner)$);
+    \coordinate (#2/in) at (#2.north);
     \coordinate (#2/out) at (#2.south);
 }
 
@@ -111,17 +241,19 @@
 % ====================================================
 
 % regular wire
-\newcommandx{\wire}[4][1=, 4=]{
+\newcommandx{\wire}[6][1=, 4=, 5=, 6=]{
 	% 1 = style (option)
 	% 2 = from
 	% 3 = to
-	% 4 = modulation (option)
+    % 4 = label content
+    % 5 = label position
+    % 6 = modulation (option)
 	\begin{pgfonlayer}{bg}
-		\draw[wire] [#1] (#2) to[#4] node {} (#3);
+		\draw[wire] [#1] (#2) to[#6] node[midway, outer xsep=7pt, outer ysep=2pt, #5] {#4} (#3);
 	\end{pgfonlayer}
 }
 
-% input wire
+% input wire without source
 \newcommand{\inwire}[3][]{
 	% 1 = style (of the wire)
 	% 2 = target
@@ -130,7 +262,7 @@
 	\wire[#1]{dummy}{#2}
 }
 
-% input wire
+% output wire without target
 \newcommand{\outwire}[3][]{
 	% 1 = style (of the wire)
 	% 2 = target
@@ -146,45 +278,54 @@
 	\wire{#1}{#1.south |- #2.north}
 }
 
-% labelled wire
-\newcommandx{\wirelabel}[6][1=, 6=]{
+% ====================================================
+% Proof-nets
+% ====================================================
+
+% cut wire
+\newcommandx{\cutwire}[4][1=, 4=1]{
+    % 1 = style (option)
+	% 2 = from
+	% 3 = to
+	% 4 = amplitude
+	\node[yshift=-#4cm] at ($(#2)!0.5!(#3)$) (cut) {$\mathsf{cut}$};
+    \draw[#1, wire, rounded corners=5pt] (#2) |- (cut);
+    \draw[#1, wire, rounded corners=5pt] (#3) |- (cut);
+}
+
+% axiom wire
+\newcommandx{\axwire}[4][1=, 4=1]{
 	% 1 = style (option)
 	% 2 = from
 	% 3 = to
-	% 4 = label
-	% 5 = position (left, right, above, below)
-	% 6 = modulation (option)
-	\begin{pgfonlayer}{bg}
-		\draw[wire] [#1] (#2) to[#6] node[midway, outer xsep=7pt, outer ysep=2pt, #5] {#4} (#3);
-	\end{pgfonlayer}
+	% 4 = amplitude
+	\node[yshift=#4cm] at ($(#2)!0.5!(#3)$) (ax) {$\mathsf{ax}$};
+    \draw[#1, wire, rounded corners=5pt] (ax) -| (#2);
+    \draw[#1, wire, rounded corners=5pt] (ax) -| (#3);
 }
 
-% custom path (for advanced TikZ users)
-\newcommand{\wirepath}[2][]{
+% general box with symbol
+% if the name of the box is 'b' then its output node is b/out
+% content is of the shape (x1)...(xn) where the xi are name of nodes
+\newcommand{\netbox}[4][]{
 	% 1 = style
-	% 2 = path
-	\begin{pgfonlayer}{bg}
-		\draw[wire] [#1] #2;
-	\end{pgfonlayer}
+	% 2 = name
+	% 3 = content
+	% 4 = symbol
+	\node[draw,inner xsep=\boxxpadding,inner ysep=\boxypadding,fit=#3] [#1] (#2) {};
+	\node[draw,triangle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2/out) {#4};
 }
 
-% ====================================================
-% IDENTITY WIRES
-% ====================================================
-\newcommandx{\cutWire}[5][1=1]{
-    % 1 = amplitude (option)
-	% 2 = from
-	% 3 = to
-	% 4 = label
-	% 5 = position
-	\wirelabel[out=-90, in=-90, looseness=#1]{#2}{#3}{#4}{#5}{}
+\newcommand{\promobox}[3][]{
+	% 1 = style
+	% 2 = name
+	% 3 = content
+	\netbox[#1]{#2}{#3}{$!$}
 }
 
-\newcommandx{\axWire}[5][1=1]{
-	% 1 = amplitude (option)
-	% 2 = from
-	% 3 = to
-	% 4 = label
-	% 5 = position
-	\wirelabel[out=90, in=90, looseness=#1]{#2}{#3}{#4}{#5}{}
+% exponential commutations (auxiliary ports)
+\newcommand{\expcomm}[2][]{
+	% 1 = style
+	% 2 = node name
+	\node[draw,circle,fill=white] [#1] (#2) {$?$};
 }
