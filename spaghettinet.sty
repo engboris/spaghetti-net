@@ -307,7 +307,7 @@
 % general box with symbol
 % if the name of the box is 'b' then its output node is b/out
 % content is of the shape (x1)...(xn) where the xi are name of nodes
-\newcommand{\netbox}[4][]{
+\newcommandx{\netbox}[4][]{
 	% 1 = style
 	% 2 = name
 	% 3 = content
@@ -316,7 +316,7 @@
 	\node[draw,triangle,fill=white] at ($(#2.south west)!0.5!(#2.south east)$) (#2/out) {#4};
 }
 
-\newcommand{\promobox}[3][]{
+\newcommandx{\promobox}[3][]{
 	% 1 = style
 	% 2 = name
 	% 3 = content
@@ -324,8 +324,32 @@
 }
 
 % exponential commutations (auxiliary ports)
-\newcommand{\expcomm}[2][]{
+\newcommandx{\expcomm}[2][]{
 	% 1 = style
 	% 2 = node name
 	\node[draw,circle,fill=white] [#1] (#2) {$?$};
+}
+
+% context wire
+\newcommandx{\context}[4][]{
+	% 1 = style
+	% 2 = net of reference
+	% 3 = node name
+	% 4 = label
+	\begin{pgfonlayer}{bg}
+		\node [#1] (#3) {#4};
+		\draw[doublelink] (#2) -- (#3);
+	\end{pgfonlayer}
+}
+
+% straight line context wire
+\newcommandx{\straightcontext}[4][]{
+	% 1 = style
+	% 2 = net of reference
+	% 3 = node name
+	% 4 = label
+	\begin{pgfonlayer}{bg}
+		\node[below=5mm of #2] [#1] (#3) {#4};
+		\draw[doublelink] (#2) -- (#3);
+	\end{pgfonlayer}
 }
